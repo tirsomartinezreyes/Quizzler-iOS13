@@ -10,7 +10,16 @@ import UIKit
 
 class ViewController: UIViewController {
     //variables
+    var originalQuestions = [
+        ["Question 1", true],
+        ["Question 2", true],
+        ["Question 3", true],
+        ["Question 4", true],
+        ["Question 5", true]
+    ]
+    
     var questions:[[Any]] = []
+    var currentQuestion:[Any]? = nil
     var numQuestions = 0
     var currentAnswer = true
     var rightAnswersCounter = 0
@@ -27,7 +36,9 @@ class ViewController: UIViewController {
     @IBAction func answerButtonPressed(_ sender: UIButton) {
         let response = sender.currentTitle!
         let responseBolean = stringToBoolean(response)
-        if currentAnswer == responseBolean{
+        let rightAnswer = currentQuestion![1] as? Bool
+        
+        if rightAnswer == responseBolean {
             print("Correct answer")
             rightAnswersCounter += 1
         }else{
@@ -43,19 +54,13 @@ class ViewController: UIViewController {
     
     //Functions
     func changeQuestion(){
-        let question = questions.popLast()
+        currentQuestion = questions.popLast()
         let percentage =  (1.0 - Float(questions.count) / Float(numQuestions))
         
-        if question != nil {
-            let label = question![0] as? String
-            let value = question![1] as? Bool
-            currentAnswer = value!
-            questionLabelOutlet.text = label
+        if currentQuestion != nil {
+            questionLabelOutlet.text = currentQuestion![0] as? String
         } else {
-            questionLabelOutlet.text = "Done, \(String(rightAnswersCounter)) of \(String(numQuestions)) right!"
-            trueButtonOutlet.alpha = 0.0
-            falseButtonOutlet.alpha = 0.0
-            restartButtonOutlet.alpha = 1.0
+            finishedQuiz()
         }
         
         progressBarOutlet.setProgress(percentage, animated: true)
@@ -70,14 +75,15 @@ class ViewController: UIViewController {
         }
     }
     
+    func finishedQuiz(){
+        questionLabelOutlet.text = "Done, \(String(rightAnswersCounter)) of \(String(numQuestions)) right!"
+        trueButtonOutlet.alpha = 0.0
+        falseButtonOutlet.alpha = 0.0
+        restartButtonOutlet.alpha = 1.0
+    }
+    
     func initialize(){
-        questions = [
-            ["Question 1", true],
-            ["Question 2", true],
-            ["Question 3", true],
-            ["Question 4", true],
-            ["Question 5", true]
-        ]
+        questions = originalQuestions
         numQuestions = questions.count
         rightAnswersCounter = 0
         
@@ -97,4 +103,3 @@ class ViewController: UIViewController {
 
 
 }
-
