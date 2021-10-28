@@ -9,17 +9,29 @@
 import UIKit
 
 class ViewController: UIViewController {
+    //Structures
+    struct Question {
+        let question: String
+        let answer: Bool
+        
+        init(question: String, answer: Bool){
+            self.question = question
+            self.answer = answer
+        }
+    }
+    
+    
     //variables
     var originalQuestions = [
-        ["Question 1", true],
-        ["Question 2", true],
-        ["Question 3", true],
-        ["Question 4", true],
-        ["Question 5", true]
+        Question(question: "Question 1", answer:true),
+        Question(question: "Question 2", answer:true),
+        Question(question: "Question 3", answer:true),
+        Question(question: "Question 4", answer:true),
+        Question(question: "Question 5", answer:true)
     ]
     
-    var questions:[[Any]] = []
-    var currentQuestion:[Any]? = nil
+    var questions:[Question] = []
+    var currentQuestion:Question? = nil
     var numQuestions = 0
     var currentAnswer = true
     var rightAnswersCounter = 0
@@ -36,7 +48,7 @@ class ViewController: UIViewController {
     @IBAction func answerButtonPressed(_ sender: UIButton) {
         let response = sender.currentTitle!
         let responseBolean = stringToBoolean(response)
-        let rightAnswer = currentQuestion![1] as? Bool
+        let rightAnswer = currentQuestion?.answer
         
         if rightAnswer == responseBolean {
             print("Correct answer")
@@ -54,15 +66,16 @@ class ViewController: UIViewController {
     
     //Functions
     func changeQuestion(){
+        
+        
         currentQuestion = questions.popLast()
         let percentage =  (1.0 - Float(questions.count) / Float(numQuestions))
         
         if currentQuestion != nil {
-            questionLabelOutlet.text = currentQuestion![0] as? String
+            questionLabelOutlet.text = currentQuestion?.question
         } else {
             finishedQuiz()
         }
-        
         progressBarOutlet.setProgress(percentage, animated: true)
          
     }
