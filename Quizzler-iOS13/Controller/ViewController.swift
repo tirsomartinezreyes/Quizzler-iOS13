@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var falseButtonOutlet: UIButton!
     @IBOutlet weak var progressBarOutlet: UIProgressView!
     @IBOutlet weak var restartButtonOutlet: UIButton!
+    @IBOutlet weak var scoreLabelOutlet: UILabel!
     
     //IB Actions
     @IBAction func answerButtonPressed(_ sender: UIButton) {
@@ -59,7 +60,7 @@ class ViewController: UIViewController {
             finishedQuiz()
         }
         progressBarOutlet.setProgress(quizzler.percentage, animated: true)
-         
+        scoreLabelOutlet.text = quizzler.getScore()
     }
     
     func stringToBoolean(_ val : String) -> Bool{

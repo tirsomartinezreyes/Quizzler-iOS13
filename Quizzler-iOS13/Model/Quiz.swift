@@ -73,6 +73,10 @@ struct Quiz {
         }
     }
     
+    func getScore() -> String{
+        return "Score: \(rightAnswersCounter)"
+    }
+    
     init(){
         self.initialize()
     }
